@@ -24,6 +24,12 @@
   </select>
   <button onclick="filterQuotes()">Filter Quotes</button>
 
+  <div>
+    <button onclick="exportToJsonFile()">Export Quotes</button>
+    <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+    <label for="importFile">Import Quotes</label>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
