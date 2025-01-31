@@ -11,7 +11,7 @@ function saveQuotes() {
 }
 
 // Function to display a random quote
-function showRandomQuote() {
+function displayRandomQuote() {
   const quoteDisplay = document.getElementById('quoteDisplay');
   if (quotes.length === 0) {
     quoteDisplay.innerHTML = `<p>No quotes available. Add a new quote!</p>`;
@@ -34,7 +34,7 @@ function addQuote() {
     saveQuotes();
     document.getElementById('newQuoteText').value = '';
     document.getElementById('newQuoteCategory').value = '';
-    showRandomQuote();
+    displayRandomQuote();
   } else {
     alert('Please fill in both the quote and category fields.');
   }
@@ -79,13 +79,13 @@ function importFromJsonFile(event) {
     const importedQuotes = JSON.parse(e.target.result);
     quotes = importedQuotes;
     saveQuotes();
-    showRandomQuote();
+    displayRandomQuote();
   };
   reader.readAsText(file);
 }
 
 // Event listener for the "Show New Quote" button
-document.getElementById('newQuote').addEventListener('click', showRandomQuote);
+document.getElementById('newQuote').addEventListener('click', displayRandomQuote);
 
 // Display a random quote when the page loads
-showRandomQuote();
+displayRandomQuote();
