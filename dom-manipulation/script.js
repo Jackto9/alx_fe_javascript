@@ -20,6 +20,8 @@ function showRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const randomQuote = quotes[randomIndex];
   quoteDisplay.innerHTML = `<p>"${randomQuote.text}"</p><p><em>${randomQuote.category}</em></p>`;
+  // Save the last viewed quote to sessionStorage
+  sessionStorage.setItem('lastViewedQuote', JSON.stringify(randomQuote));
 }
 
 // Function to add a new quote
@@ -53,6 +55,33 @@ function filterQuotes() {
   filteredQuotes.forEach(quote => {
     quoteDisplay.innerHTML += `<p>"${quote.text}"</p><p><em>${quote.category}</em></p>`;
   });
+}
+
+// Function to export quotes as a JSON file
+function exportToJsonFile() {
+  const dataStr = JSON.stringify(quotes, null, 2);
+  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  const url = URL.createObjectURL(dataBlob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'quotes.json';
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+// Function to import quotes from a JSON file
+function importFromJsonFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const importedQuotes = JSON.parse(e.target.result);
+    quotes = importedQuotes;
+    saveQuotes();
+    showRandomQuote();
+  };
+  reader.readAsText(file);
 }
 
 // Event listener for the "Show New Quote" button
