@@ -16,9 +16,6 @@ function showRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const randomQuote = quotes[randomIndex];
   quoteDisplay.innerHTML = `<strong>${randomQuote.text}</strong> <em>(${randomQuote.category})</em>`;
-
-  // Save the last viewed quote to session storage (optional)
-  sessionStorage.setItem('lastViewedQuote', JSON.stringify(randomQuote));
 }
 
 // Function to dynamically create the "Add Quote" form
@@ -54,8 +51,8 @@ function addQuote() {
     document.getElementById('newQuoteText').value = '';
     document.getElementById('newQuoteCategory').value = '';
     saveQuotes(); // Save quotes to local storage
-    populateCategories(); // Update the category dropdown
-    filterQuotes(); // Refresh the displayed quotes
+    syncWithServer(); // Sync with the server
+    showRandomQuote();
   } else {
     alert('Please fill in both the quote and category fields.');
   }
@@ -131,6 +128,52 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
+// Function to fetch quotes from the server
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+    const serverQuotes = await response.json();
+    return serverQuotes.map(post => ({ text: post.title, category: 'Server' })); // Map server data to quotes
+  } catch (error) {
+    console.error('Error fetching quotes from server:', error);
+    return [];
+  }
+}
+
+// Function to sync local data with the server
+async function syncWithServer() {
+  const serverQuotes = await fetchQuotesFromServer();
+  const localQuotes = JSON.parse(localStorage.getItem('quotes')) || [];
+
+  // Merge server and local quotes (server data takes precedence)
+  const mergedQuotes = [...localQuotes, ...serverQuotes].reduce((acc, quote) => {
+    const existingQuote = acc.find(q => q.text === quote.text);
+    if (!existingQuote) {
+      acc.push(quote);
+    }
+    return acc;
+  }, []);
+
+  // Update local storage and quotes array
+  quotes = mergedQuotes;
+  saveQuotes();
+
+  // Notify the user
+  const notification = document.createElement('div');
+  notification.textContent = 'Data synced with the server.';
+  notification.style.backgroundColor = '#d4edda';
+  notification.style.color = '#155724';
+  notification.style.padding = '10px';
+  notification.style.marginTop = '10px';
+  notification.style.borderRadius = '5px';
+  document.body.appendChild(notification);
+
+  // Remove the notification after 3 seconds
+  setTimeout(() => {
+    notification.remove();
+  }, 3000);
+}
+
 // Event listener for the "Show New Quote" button
 document.getElementById('newQuote').addEventListener('click', filterQuotes);
 
@@ -146,3 +189,6 @@ createAddQuoteForm();
 // Populate categories and display a random quote when the page loads
 populateCategories();
 filterQuotes();
+
+// Periodically sync with the server (every 30 seconds)
+setInterval(syncWithServer, 30000);
