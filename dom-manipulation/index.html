@@ -1,12 +1,33 @@
-<div>
-  <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
-  <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
-  <button onclick="addQuote()">Add Quote</button>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Quote Generator</title>
+</head>
+<body>
+    <h1>Dynamic Quote Generator</h1>
 
-<div>
-  <input id="filterCategory" type="text" placeholder="Enter category to filter" />
-  <button onclick="filterQuotes()">Filter Quotes</button>
-</div>
+    <!-- Display Quote -->
+    <div id="quoteDisplay">Click the button to see a quote!</div>
+    <button id="newQuote">Show New Quote</button>
 
-<button onclick="downloadQuotes()">Download Quotes</button>
+    <!-- Add New Quote -->
+    <div>
+        <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+        <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+        <button onclick="addQuote()">Add Quote</button>
+    </div>
+
+    <!-- Filter Quotes -->
+    <div>
+        <input id="filterCategory" type="text" placeholder="Enter category to filter" />
+        <button onclick="filterQuotes()">Filter Quotes</button>
+    </div>
+
+    <!-- Download Quotes -->
+    <button onclick="downloadQuotes()">Download Quotes</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
