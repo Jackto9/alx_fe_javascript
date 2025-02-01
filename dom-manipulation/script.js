@@ -23,8 +23,7 @@ function showRandomQuote() {
 
 // Function to dynamically create the "Add Quote" form
 function createAddQuoteForm() {
-  const formContainer = document.createElement('div');
-  formContainer.id = 'addQuoteForm';
+  const formContainer = document.getElementById('addQuoteForm');
 
   const quoteInput = document.createElement('input');
   quoteInput.id = 'newQuoteText';
@@ -43,8 +42,6 @@ function createAddQuoteForm() {
   formContainer.appendChild(quoteInput);
   formContainer.appendChild(categoryInput);
   formContainer.appendChild(addButton);
-
-  document.body.appendChild(formContainer);
 }
 
 // Function to add a new quote
@@ -92,22 +89,14 @@ function importFromJsonFile(event) {
 // Event listener for the "Show New Quote" button
 document.getElementById('newQuote').addEventListener('click', showRandomQuote);
 
+// Event listener for the "Export Quotes" button
+document.getElementById('exportQuotes').addEventListener('click', exportQuotes);
+
+// Event listener for the "Import Quotes" file input
+document.getElementById('importFile').addEventListener('change', importFromJsonFile);
+
 // Create the "Add Quote" form dynamically
 createAddQuoteForm();
-
-// Add export button
-const exportButton = document.createElement('button');
-exportButton.textContent = 'Export Quotes';
-exportButton.onclick = exportQuotes;
-document.body.appendChild(exportButton);
-
-// Add import file input
-const importInput = document.createElement('input');
-importInput.type = 'file';
-importInput.id = 'importFile';
-importInput.accept = '.json';
-importInput.onchange = importFromJsonFile;
-document.body.appendChild(importInput);
 
 // Display a random quote when the page loads
 showRandomQuote();
