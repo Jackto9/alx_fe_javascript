@@ -22,7 +22,7 @@
     #addQuoteForm {
       margin-top: 20px;
     }
-    input, button {
+    input, button, select {
       margin: 5px;
       padding: 10px;
     }
@@ -32,6 +32,13 @@
   <h1>Dynamic Quote Generator</h1>
   <div id="quoteDisplay">Click the button to see a quote!</div>
   <button id="newQuote">Show New Quote</button>
+
+  <!-- Category Filter Dropdown -->
+  <label for="categoryFilter">Filter by Category:</label>
+  <select id="categoryFilter" onchange="filterQuotes()">
+    <option value="all">All Categories</option>
+    <!-- Dynamically populated categories -->
+  </select>
 
   <!-- Add Quote Form (dynamically created in script.js) -->
   <div id="addQuoteForm"></div>
