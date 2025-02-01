@@ -42,19 +42,55 @@ function createAddQuoteForm() {
 }
 
 // Function to add a new quote
-function addQuote() {
+async function addQuote() {
   const newQuoteText = document.getElementById('newQuoteText').value;
   const newQuoteCategory = document.getElementById('newQuoteCategory').value;
 
   if (newQuoteText && newQuoteCategory) {
-    quotes.push({ text: newQuoteText, category: newQuoteCategory });
+    const newQuote = { text: newQuoteText, category: newQuoteCategory };
+
+    // Add the new quote to the local quotes array
+    quotes.push(newQuote);
     document.getElementById('newQuoteText').value = '';
     document.getElementById('newQuoteCategory').value = '';
     saveQuotes(); // Save quotes to local storage
-    syncWithServer(); // Sync with the server
+
+    // Send the new quote to the server
+    await sendQuoteToServer(newQuote);
+
+    // Sync with the server
+    await syncWithServer();
+
+    // Display a random quote
     showRandomQuote();
   } else {
     alert('Please fill in both the quote and category fields.');
+  }
+}
+
+// Function to send a new quote to the server
+async function sendQuoteToServer(quote) {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: quote.text,
+        body: quote.category,
+        userId: 1, // Simulate a user ID
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to send quote to server');
+    }
+
+    const data = await response.json();
+    console.log('Quote sent to server:', data);
+  } catch (error) {
+    console.error('Error sending quote to server:', error);
   }
 }
 
