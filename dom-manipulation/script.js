@@ -194,9 +194,9 @@ async function syncQuotes() {
   quotes = mergedQuotes;
   saveQuotes();
 
-  // Notify the user
+  // Display the sync success message
   const notification = document.createElement('div');
-  notification.textContent = 'Data synced with the server.';
+  notification.textContent = 'Quotes synced with server!';
   notification.style.backgroundColor = '#d4edda';
   notification.style.color = '#155724';
   notification.style.padding = '10px';
