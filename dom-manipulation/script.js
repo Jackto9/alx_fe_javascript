@@ -59,7 +59,7 @@ async function addQuote() {
     await sendQuoteToServer(newQuote);
 
     // Sync with the server
-    await syncWithServer();
+    await syncQuotes();
 
     // Display a random quote
     showRandomQuote();
@@ -177,7 +177,7 @@ async function fetchQuotesFromServer() {
 }
 
 // Function to sync local data with the server
-async function syncWithServer() {
+async function syncQuotes() {
   const serverQuotes = await fetchQuotesFromServer();
   const localQuotes = JSON.parse(localStorage.getItem('quotes')) || [];
 
@@ -227,4 +227,4 @@ populateCategories();
 filterQuotes();
 
 // Periodically sync with the server (every 30 seconds)
-setInterval(syncWithServer, 30000);
+setInterval(syncQuotes, 30000);
